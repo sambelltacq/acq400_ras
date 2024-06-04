@@ -1,0 +1,134 @@
+services:
+
+
+  epicsbase:
+    image: epicsbase
+    build:
+      context: ./
+      dockerfile: docker/epicsBase/Dockerfile
+
+
+  node_cache:
+    image: node_cache
+    build:
+      context: ./
+      dockerfile: docker/node_cache/Dockerfile
+
+
+  frontendserverdev:
+    env_file: .env
+    build:
+      context: ./     
+      dockerfile: docker/frontendserverDev/Dockerfile
+    volumes:
+      - ./ReactApp/package.json:/ReactApp/package.json
+      - ./ReactApp/src:/ReactApp/src
+      - ./ReactApp/index.html:/ReactApp/index.html
+      - ./ReactApp/vite.config.js:/ReactApp/vite.config.js
+      - ./ReactApp/public:/ReactApp/public
+    restart: always
+    ports:
+      - "3001:3000"
+    depends_on:
+      - node_cache
+
+
+  pvserver1:
+    build:
+      context: ./
+      dockerfile: docker/pvserver/Dockerfile
+    restart: always
+    network_mode: host
+    tty: true
+    stdin_open: true
+    env_file: .env
+    environment:
+      - ALARM_DATABASE=localhost
+      - ALARM_DATABASE_REPLICA_SET_NAME=devrs
+      - LOADSAVE_DATABASE=localhost
+      - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
+      - ADMIN_DATABASE=localhost
+      - ADMIN_DATABASE_REPLICA_SET_NAME=devrs
+      - WATCH_DEBUG_DATABASE=localhost
+      - WATCH_DEBUG_DATABASE_REPLICA_SET_NAME=devrs
+      - DEMO_ARCHIVER=http://localhost:17668
+      - pvServerLogLevel=INFO
+      - pvServerLogFile=/pvServer/log/pvServerLogFile
+      - pvServerPort=9001
+      - pvServerURL=http://127.0.0.1
+    volumes:
+      - ./log/:/pvServer/log
+      - ./build:/pvServer/build
+    depends_on:
+      - epicsbase
+
+
+  nginx:
+    image: nginx:1.25.3
+    restart: always
+    network_mode: host
+    depends_on:
+      - pvserver1
+    entrypoint:
+      - /custom/setupNginx.dev.sh
+      - /docker-entrypoint.sh
+    command: ["nginx", "-g", "daemon off;"] 
+    volumes:
+      - ./nginx/setupNginx.dev.sh:/custom/setupNginx.dev.sh
+      - ./nginx/nginx.dev.conf:/custom/nginx.dev.conf
+      - ./nginx/nginx.httpredirect.conf:/custom/nginx.httpredirect.conf
+      - ./build/styleguide:/var/www/styleguide
+      - ./certificates:/etc/nginx/certificates
+    env_file: .env
+
+
+  unsecurestylguidepvserver:
+    build:
+      context: ./
+ 
+      dockerfile: docker/pvserver/Dockerfile
+    restart: always
+    network_mode: host
+    env_file: .env
+    environment:
+          - ALARM_DATABASE=localhost
+          - ALARM_DATABASE_REPLICA_SET_NAME=devrs
+          - LOADSAVE_DATABASE=localhost
+          - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
+          - ADMIN_DATABASE=localhost
+          - ADMIN_DATABASE_REPLICA_SET_NAME=devrs
+          - WATCH_DEBUG_DATABASE=localhost
+          - WATCH_DEBUG_DATABASE_REPLICA_SET_NAME=devrs
+          - DEMO_ARCHIVER=http://localhost:17668
+          - pvServerURL=http://127.0.0.1
+          - pvServerPort=5001
+          - VITE_EnableLogin=false
+    volumes:
+          - ./certificates:/certificates/
+    depends_on:
+      - epicsbase
+
+
+  demoioc:
+    build:
+      context: ./
+     
+      dockerfile: docker/demoioc/Dockerfile
+    tty: true
+    stdin_open: true
+    restart: always
+    network_mode: host
+    depends_on:
+      - epicsbase
+  storybook:
+    build:
+      context: ./
+      dockerfile: docker/storybook/Dockerfile    
+    env_file: .env
+    environment:
+            - pvServerPort=5001
+            - VITE_EnableLogin=false
+    volumes:
+      - ./build/styleguide:/build/
+    depends_on:
+      - node_cache
