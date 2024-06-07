@@ -29,7 +29,20 @@ import Vault from "./components/AlarmHandler/Vault";
 import Help from "./components/docs/Help";
 import Administrator from "./components/Administrator/Administrator";
 import UserProfile from "./components/SystemComponents/userProfiles/UserProfile";
-import ProtectedRoute from "./components/SystemComponents/ProtectedRoute";
+import ProtectedRoute from "@components/SystemComponents/ProtectedRoute";
+
+import Capture from "@dtacq/opi/Capture";
+import Live from "@dtacq/opi/Live";
+import Post from "@dtacq/opi/Post";
+import Stream from "@dtacq/components/Stream.jsx";
+import Transient from "@dtacq/components/Transient.jsx";
+import Index from "@dtacq/Index.jsx";
+import UiTest from "@dtacq/UiTest"
+
+
+import { ContextTest } from '@dtacq/ContextTest.jsx';
+
+
 const AppRoutes = (props) => {
   return (
     <BrowserRouter>
@@ -165,6 +178,65 @@ const AppRoutes = (props) => {
         {/* new Beamline and table control System routes end*/}
 
         {/*demos end*/}
+
+        {/*CUSTOM ROUTES*/}
+        <Route
+          path="/capture"
+          element={
+            <ProtectedRoute>
+              <Capture />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/live"
+          element={
+            <ContextTest>
+              <ProtectedRoute>
+                <Live />
+              </ProtectedRoute>
+            </ContextTest>
+          }
+        />
+        <Route
+          path="/post"
+          element={
+            <ContextTest>
+              <ProtectedRoute>
+                <Post />
+              </ProtectedRoute>
+            </ContextTest>
+          }
+        />
+        <Route
+          path="/index"
+          element={
+            <ProtectedRoute>
+              <Index />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/layoutTest"
+          element={
+            <ProtectedRoute>
+              <UiTest />
+            </ProtectedRoute>
+          }
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         {/*staging start*/}
         <Route
