@@ -4,3 +4,4 @@ WORKDIR /ReactApp
 ENV PATH /ReactApp/node_modules/.bin:$PATH
 #RUN npm install --legacy-peer-dep
 RUN yarn install
+RUN yarn add flexlayout-react
