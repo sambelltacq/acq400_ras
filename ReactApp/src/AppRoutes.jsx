@@ -40,6 +40,11 @@ import Index from "@dtacq/Index.jsx";
 import UiTest from "@dtacq/UiTest"
 
 
+import OpiTest from "@dtacq/opi/OpiTest"
+import Launcher from "@dtacq/Launcher"
+
+import ImportTest from "@dtacq/ImportTest"
+
 import { ContextTest } from '@dtacq/ContextTest.jsx';
 
 
@@ -221,6 +226,32 @@ const AppRoutes = (props) => {
           element={
             <ProtectedRoute>
               <UiTest />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/opiTest"
+          element={
+            <ProtectedRoute>
+              <OpiTest />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/launcher"
+          element={
+            <ProtectedRoute>
+              <Launcher 
+                uut="acq2106_130"
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/import"
+          element={
+            <ProtectedRoute>
+              <ImportTest />
             </ProtectedRoute>
           }
         />

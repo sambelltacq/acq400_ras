@@ -51,7 +51,7 @@ const TraditionalLayout = ({
 
   const [showDrawer, setShowDrawer] = useState(false);
   const [showMVDrawer, setShowMVDrawer] = useState(false);
-
+  console.log('notInStyleGuide is ', notInStyleGuide)
   return (
     <React.Fragment>
       <CssBaseline />

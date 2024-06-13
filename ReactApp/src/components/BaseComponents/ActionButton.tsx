@@ -7,8 +7,15 @@ const ActionButtonComponent = (props) => {
    * Send the predefined value to the PV.
    */
   const handleButtonClick = () => {
+    console.error('button start')
+    console.log(props.actionValue)
+    console.log(props)
     props.handleImmediateChange(props.actionValue);
+    console.error('button done')
   };
+
+  console.warn('[ActionButtonComponent] start')
+  console.log(props)
 
   return (
     <FormControlLabel
@@ -61,6 +68,9 @@ const ActionButton = ({
   color = "primary",
   ...others
 }: ActionButtonProps) => {
+
+  console.warn('ActionButton START')
+  console.log(others)
   return (
     <Widget
       {...others}

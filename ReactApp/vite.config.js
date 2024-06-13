@@ -3,8 +3,10 @@ import react from '@vitejs/plugin-react'
 import path from 'path';
 
 const aliases = {
+  '@': path.resolve(__dirname),
   '@components': path.resolve(__dirname, 'src/components'),
-  '@dtacq': path.resolve(__dirname, 'src/components/Dtacq'),
+  '@dtacq': path.resolve('/src/components/Dtacq'),
+
 };
 
 console.log('Active Aliases:', aliases);

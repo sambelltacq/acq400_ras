@@ -1,0 +1,23 @@
+convert cs-studio ops into react components
+
+
+
+
+
+
+
+
+
+network page
+    shows every uut on network
+    can add and remove uuts
+
+uut_launcher page
+    wrapped by uut context value
+        uut context is hostnam, ip, sites, nchans
+    has launcher sidebar
+    uses dockview
+    clickbutton opens new dockewindow
+
+
+

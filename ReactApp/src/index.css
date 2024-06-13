@@ -12,3 +12,47 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+
+
+html, body{
+  height: 100%;
+  width: 100%;
+}
+
+.app-root{
+    background-color: grey;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Courier New", Courier, monospace;
+    display: flex;
+}
+
+.sidebar, .content, .header, .main, .footer{
+    padding: 20px;
+}
+
+.sidebar{
+    border: 1px solid peru;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 20px;
+
+}
+.content{
+    border: 1px solid purple;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.header{
+    border: 1px solid blue;
+}
+.main{
+    border: 1px solid red;
+    flex-grow: 1;
+}
+.footer{
+    border: 1px solid green;
+}

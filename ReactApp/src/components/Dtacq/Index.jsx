@@ -115,6 +115,7 @@ var json = {
     }
 };
 
+
 console.log(Layout)
 
 console.log(Model)
@@ -125,9 +126,12 @@ console.log('hello world')
 function Test1() {
 
     const factory = (node) => {
+
       var component = node.getComponent();
       console.log(node)
       console.log(component)
+        
+
       if (component === "button") {
         return <button>{node.getName()}</button>;
       } else if ((component === "Stream")){
@@ -148,7 +152,7 @@ function Test1() {
   
     return (
         <div>
-            <button id="ontop" onClick={addNew}>test1</button>
+            <h1>acq400_ras UUTNAME</h1>
             <div class="layoutContainer">
             <Layout
                 model={model}
@@ -182,7 +186,6 @@ function Index() {
         <div>
             <h1>Index</h1>
             {buttons}
-            <Launcher />
         </div>
     );
 }

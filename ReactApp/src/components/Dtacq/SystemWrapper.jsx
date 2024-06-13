@@ -1,0 +1,11 @@
+/*
+wrapper 
+get hostname 
+    from passed value 
+    from url query
+
+
+    wrape every 
+
+
+*/

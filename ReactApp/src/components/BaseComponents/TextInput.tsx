@@ -4,15 +4,28 @@ import { InputAdornment, TextField } from "@mui/material";
 import Widget from "../SystemComponents/Widgets/Widget";
 
 const TextInputComponent = (props) => {
+  //console.warn('[TextInputComponent] START')
+  //console.log(props)
+
   const handleChange = (event) => {
     let value = event.target.value;
+    //console.warn('[TextInputComponent] handleChange')
+    //console.log(props)
+    //console.log(event)
+    //console.log(value)
+    //console.log('\n')
     props.handleChange(value);
   };
+
   const handleCatchReturn = (event) => {
     if (event.key === "Enter") {
+      console.warn('[TextInputComponent] handleCatchReturn')
+      console.log(props)
+      console.log('\n')
       props.handleCommitChange();
     }
   };
+  
   const { initialized } = props;
   const { value } = props;
 

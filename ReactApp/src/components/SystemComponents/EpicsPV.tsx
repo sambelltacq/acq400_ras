@@ -227,6 +227,7 @@ export const useEpicsPV = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pvName, socket]);
   useEffect(() => {
+    console.error('new value trigger triggered')
     if (props.newValueTrigger > 0) {
       socketRef.current.emit("write_to_pv", {
         pvname: pv.pvname,
@@ -237,6 +238,7 @@ export const useEpicsPV = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.newValueTrigger]);
 
+  console.log(props.newValueTrigger)
   return pv;
 };
 
@@ -254,12 +256,30 @@ export const useEpicsPV = (props) => {
  *
  *
  **/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const EpicsPV = ({
   debug = false,
   makeNewSocketIoConnection = false,
   useBinaryValue = false,
   ...props
 }: EpicsPVProps) => {
+
+  console.warn("EpicsPV start")
   const pv = useEpicsPV({
     debug: debug,
     makeNewSocketIoConnection: makeNewSocketIoConnection,
@@ -285,6 +305,27 @@ const EpicsPV = ({
     </React.Fragment>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Props interface for the EpicsPV component.

@@ -1,0 +1,10 @@
+    <Button
+    fullWidth
+    className={classes.button}
+    component={Link}
+    to="/Capture"
+    color="primary"
+    variant={buttonVariant}
+    >
+    "capture"
+    </Button>
