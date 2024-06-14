@@ -33,24 +33,14 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import {useState} from 'react'
 
-function Sidebar({toggle}){
-    return(
-        <React.Fragment>
-            <div
-                className="sidebar"
-                style={{
-                    width: toggle ? '100px': '0px'
-                }}
-            >
-                <span>sidebar</span>
-            </div>
-        </React.Fragment>
-    );
-}
-function doingThing(args) {
-    console.log("Doing thing with args:", args);
-    // Implement the logic for handling the args here
-  }
+import NestedList from './components/NestedList'
+
+import SiteInput from './components/SiteInput'
+
+import SiteRotor from './components/SiteRotor'
+
+import { Unstable_NumberInput as NumberInput } from '@mui/base/Unstable_NumberInput';
+
 
 const opiDef = [
     {
@@ -60,121 +50,95 @@ const opiDef = [
                 label: "Stream",
                 args: {
                     path: "Stream.jsx",
-                    site: 1,
                 }
 
             },
-            {label: "Transient"},
+            {
+                label: "Transient",
+                args: {
+                    path: "Transient.jsx",
+                }
+            },
+            {
+                label: "Blt",
+                args: {
+                    path: "Placeholder.jsx",
+                }
+            },
+            {
+                label: "Multievent",
+                args: {
+                    path: "Placeholder.jsx",
+                }
+            },
+            {
+                label: "Sync Role",
+                args: {
+                    path: "Placeholder.jsx",
+                }
+            },
         ]
     },
     {
-        label: 'Live',
+        label: 'Live waveform',
         children: [
             {
-                label: "Live 1",
-                children: [
-                    {label: "1-8"},
-                    {label: "9-16"},
-                ]
+                label: "Live 1-8",
+                args: {
+                    path: "Placeholder.jsx",
+                }
             },
             {
-                label: "Live 2",
-                children: [
-                    {label: "1-8"},
-                    {label: "9-16"},
-                ]
+                label: "Live 9-16",
+                args: {
+                    path: "Placeholder.jsx",
+                }
+            },
+        ]
+    },
+    {
+        label: 'Post waveform',
+        children: [
+            {
+                label: "Post 1-8",
+                args: {
+                    path: "Placeholder.jsx",
+                }
+            },
+            {
+                label: "Post 9-16",
+                args: {
+                    path: "Placeholder.jsx",
+                }
             },
         ]
     },
 ]
 
-function ItemsToList({ items, expandedItems, handleToggle, depth = 0}) {
-    return (
-        <React.Fragment>
-            {items.map((item, index) => {
-                const isExpanded = expandedItems[item.label];
-                return (
-                    <div key={index}>
-                            <ListItem 
-                                button 
-                                onClick={() => {
-                                handleToggle(item.label);
-                                if (item.args) {
-                                doingThing(item.args);
-                                }
-                                }} 
-                                sx={{ pl: depth * 4 }}
-                            >
-                            <ListItemText primary={item.label} />
-                            {item.children ? (isExpanded ? <ExpandLess /> : <ExpandMore />) : null}
-                            </ListItem>
-                            {item.children && (
-                            <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                <ItemsToList 
-                                items={item.children}
-                                expandedItems={expandedItems}
-                                handleToggle={handleToggle}
-                                depth={depth + 1}
-                                />
-                            </List>
-                            </Collapse>
-                        )}
-                    </div>
-                );
-            })}
-        </React.Fragment>
-    );
-}
-  
-function OpiDrawer({ items }) {
-    const [expandedItems, setExpandedItems] = useState({});
 
-    const handleToggle = (label) => {
-        setExpandedItems((prevExpandedItems) => ({
-        ...prevExpandedItems,
-        [label]: !prevExpandedItems[label],
-        }));
-    };
-  
-    return (
-        <List
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-        >
-            <ListSubheader component="div" id="nested-list-subheader">
-                Opis
-            </ListSubheader>
-            <ItemsToList 
-                items={items} 
-                expandedItems={expandedItems} 
-                handleToggle={handleToggle} 
-            />
-        </List>
-    );
+function testFunc1(props){
+    console.log('test func1')
 }
 
-/*
-                style={{
-                    width: open ? '200px': '0px',
-                    padding: open ? 'inherit' : '0px'
-                }}
 
-*/
+
+function setValue(){
+
+}
 
 function Test1(props){
 
-    const drawerWidth = 240;
 
     const [open, setOpen] = React.useState(false);
 
-    const handleClick = () => {
-        setOpen(!open);
-    };
+
 
     function drawerToggle(){
         setOpen(!open);
     }
-
+    //                <SiteInput />
+    //<NestedList items={opiDef} target={testFunc1}/>
+    //inherit
 
     return (
         <React.Fragment>
@@ -182,19 +146,23 @@ function Test1(props){
             <div 
                 class="sidebar"
                 style={{
-                    display: open ? 'block': 'none',
+                    display: open ? '': 'none',
                 }}
             
             >
-                <span>sidebar</span>
-                <input placeholder='SITE'></input>
-                <OpiDrawer items={opiDef}/>
+            <Toolbar>
+                <SiteRotor min={1} max={6}></SiteRotor>
+            </Toolbar>
+            <div className='ExpandScroll'>
+                <NestedList 
+                    items={opiDef}
+                    target={testFunc1}
+                />
+            </div>
 
             </div>
             <div className="content">
-                <span>content</span>
                 <div className="header">
-                    <span>header</span>
                     <AppBar position="static">
                         <Toolbar>
                         <IconButton
@@ -207,21 +175,17 @@ function Test1(props){
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                             acq400_ras
                         </Typography>
-                        <Button color="inherit">SAVE</Button>
-                        <input></input>
+                        <Typography variant="h6" component="div">
+                            acq2106_130
+                        </Typography>
                         </Toolbar>
                     </AppBar>
                 </div>
                 <div className="main">
                     <span>main</span>
-                    <h4>React flex here</h4>
-                </div>
-                <div className="footer">
-                    <span>footer</span>
-                    <h5>save or load layout here + Copywrite</h5>
                 </div>
             </div>
         </React.Fragment>

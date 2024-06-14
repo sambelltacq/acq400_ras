@@ -28,9 +28,6 @@ const Widget = ({
   writeOutputValueToAllpvs = false,
   ...others
 }: WidgetProps) => {
-
-  console.warn('Widget START')
-  console.log(others)
   const { disableProbe, index } = others;
   const theme = useTheme();
   const [value, setValue] = useState<any>(0);
@@ -178,7 +175,6 @@ const Widget = ({
 
   useEffect(() => {
     if (immediateValue !== null) {
-      console.error('immediateValue')
       const tempValue = checkPrecision(
         isInsideLimits(immediateValue, min, max),
         prec
@@ -192,7 +188,6 @@ const Widget = ({
 
   useEffect(() => {
     if (commitChange) {
-      console.error('commitChange')
       const tempValue = checkPrecision(isInsideLimits(value, min, max), prec);
       setValue(formatValue(tempValue, others.numberFormat));
       setOutputValue(tempValue);
@@ -220,9 +215,6 @@ const Widget = ({
   }, [others.custom_selection_strings, pv.enum_strs, others.macros]);
 
   useEffect(() => {
-    console.warn('WIDGET  useEffect pvs eeeeeeeeeeeeeeeeee')
-    console.log(others)
-
     let init =
       typeof others.pv !== "undefined" || typeof others.pvs !== "undefined";
 
@@ -258,40 +250,6 @@ const Widget = ({
     );
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const getPvs = (
     pvArray,
     widgetProps,
@@ -300,9 +258,6 @@ const Widget = ({
     newValueTrigger,
     outputValue
   ) => {
-    console.warn('getPvs START')
-    console.log(pvArray)
-
     let pvs = [];
     if (typeof pvArray !== "undefined") {
       const pvs: React.ReactNode[] = [];
@@ -318,47 +273,45 @@ const Widget = ({
         }
         pvs.push(
           <PV
-           
+            key={index.toString()}
+            makeNewSocketIoConnection={props.makeNewSocketIoConnection}
             pv={pv}
+            maxPv={props.maxPv}
+            minPv={props.minPv}
+            min={props.min}
+            max={props.max}
+            usePvMinMax={props.usePvMinMax}
+            unitsPv={props.unitsPv}
+            usePvUnits={props.usePvUnits}
+            alarmPv={props.alarmPv}
+            labelPv={props.labelPv}
+            alarmSensitive={props.alarmSensitive}
+            usePvLabel={props.usePvLabel}
+            usePvPrecision={props.usePvPrecision}
+            prec={props.prec}
+            precPv={props.precPv}
+            useMetadata={useMetadata}
+            macros={props.macros}
             newValueTrigger={newValueTrigger}
             outputValue={outputValue}
+            useStringValue={props.useStringValue}
+            initialLocalVariableValue={props.initialLocalVariableValue}
+            debug={props.debug}
+            pvData={(data) =>
+              setState((prevState) => {
+                let state = [...prevState];
+                state[index] = data;
+                return state;
+              })
+            }
           />
         );
       });
-      console.log(pvs)
       return pvs;
     } else {
       return [];
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const childPv = typeof others.pv !== "undefined" && (
     <PV
@@ -397,8 +350,6 @@ const Widget = ({
     writeOutputValueToAllpvs ? newValueTrigger : undefined,
     writeOutputValueToAllpvs ? outputValue : undefined
   );
-  console.log('child pvs')
-  console.error(childPvs)
 
   const handleValue = (newValue, setFunction) => {
     if (index !== undefined && Array.isArray(value)) {
@@ -486,56 +437,6 @@ const Widget = ({
     </Tooltip>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 interface WidgetProps {
   /**

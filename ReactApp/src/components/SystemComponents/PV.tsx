@@ -223,8 +223,6 @@ const PV = ({
   });
 
   const pvConnection = (pv, props) => {
-    console.warn('pvConnection')
-    console.log(props)
     let pvname = pv.toString();
     if (props.macros) {
       let macro;
@@ -240,24 +238,6 @@ const PV = ({
       : EpicsPV({ ...props, pv: pvname });
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   const processPvDataData = useCallback((data:EpicsPVType) => {
     setPvs((pvs) => ({ ...pvs, data }));
   }, []);
