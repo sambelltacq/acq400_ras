@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import  Switch  from '@components/BaseComponents/Switch';
 import  ToggleButton  from '@components/BaseComponents/ToggleButton';
@@ -11,6 +11,12 @@ import { withStyles, makeStyles} from '@mui/styles';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import ToggleButton2 from '@mui/material/ToggleButton';
+
+
+import { TestContext } from "@dtacq/TestContext";
+
+import DtacqContext, {SiteContext} from "@dtacq/DtacqContext";
+
 
 const useStyles = makeStyles((theme) => ({
     selected: {
@@ -44,15 +50,21 @@ const useStyles = makeStyles((theme) => ({
     );
   };
 
-function Stream() {
+function Stream({site}) {
+    const { state, setState } = useContext(DtacqContext);
+    console.log("Stream", state)
     const uut = 'acq2106_130'
+
+    //const siteTarget = useContext(SiteContext);
 
     const inlineStyle = {
     };
 
+    const contextValue = useContext(TestContext);
+
     return (
         <React.Fragment>
-            <h1>Stream 2</h1>
+            <h1>Stream 2 {site}</h1>
 
             <div>
                 <ToggleButton

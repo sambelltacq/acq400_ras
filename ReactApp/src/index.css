@@ -56,7 +56,6 @@ html, body{
     flex-direction: column;
 }
 .main{
-    border: 1px solid red;
     flex-grow: 1;
     position: relative
 }

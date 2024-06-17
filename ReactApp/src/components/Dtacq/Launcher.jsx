@@ -1,4 +1,4 @@
-import React, { useEffect, createRef, useState, Suspense} from 'react';
+import React, { useEffect, createRef, useState, Suspense, useRef} from 'react';
 import { styled, useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -44,6 +44,15 @@ import {Layout, Model} from 'flexlayout-react';
 
 import { useNavigate } from 'react-router-dom';
 
+
+import { useContext } from 'react';
+import { TestContext } from "@dtacq/TestContext";
+
+import DtacqContext, {SiteContext} from "@dtacq/DtacqContext";
+
+import { useParams } from 'react-router-dom';
+
+
 const opiDef = [
     {
         label: 'Capture',
@@ -52,6 +61,7 @@ const opiDef = [
                 label: "Stream",
                 args: {
                     path: "Stream2.jsx",
+                    hello: "world",
                 }
 
             },
@@ -131,64 +141,90 @@ var baseJson = {
 };
 
 
-
 function setValue(){
 
 }
 
-function Test1(props){
+function Launcher(){
+    console.warn("Launcher LOADED")
 
+    const { uut } = useParams()
+    const [state, setState] = useState({});
+    const [site, setSite] = useState(1);
+
+    useEffect(() => {
+        updateState('uut', uut)
+        updateState('site', 1)
+        loadLayout(uut)
+    }, [uut]);
+;
+
+    let siteC = useContext(SiteContext);
+    console.log("sitec", siteC)
+    siteC = 2
+    console.log("sitec", siteC)
+    
+
+    const componentCache = {};
+
+    const layoutRef = createRef()
 
     const [open, setOpen] = React.useState(false);
 
     const [model, setModel] = useState(Model.fromJson(baseJson));
-    const layoutRef = createRef()
 
-    const componentCache = {};
-
-    function factory2(node){
-        console.log('fatory')
-        console.log(node)
-        var component = node.getComponent();
-        let cached = componentCache[component];
-        console.log(componentCache)
-        if (!cached) {
-            console.log('NOT CAHCED')
-            let path = `./opi/${component}`
-            let out = importComponent(path)
-            componentCache[component] = out;
-        }
-        console.log(componentCache)
-        return componentCache[component]
-
-
-        var component = node.getComponent();
-        if(component == 'Live'){
-            console.error('live component')
-            let path = "src/components/Dtacq/opi/Stream"
-            return importComponent(path)
+    function saveLayout(){
+        localStorage.setItem(state.uut, JSON.stringify(model.toJson()))
+    }
+    function loadLayout(key){
+        const savedLayout = JSON.parse(localStorage.getItem(key))
+        if(savedLayout){
+            setModel(Model.fromJson(savedLayout))
         }
     }
+
+    function updateState(key, value){
+        setState(prevState => ({
+            ...prevState,
+            [key]: value
+        }));
+    };
+    
+
+
+    function factory(node, abc){ //change name
+        let component = node.getComponent();
+        let cached = componentCache[component];
+        console.log(node.getExtraData())
+        if (!cached) {
+            let path = `./opi/${component}`
+            componentCache[component] = importComponent(path);
+        }
+        console.log(`adding component ${component}`)
+        return componentCache[component]
+    }
+
     function importComponent(path) {
-        console.log("importComponent importComponent")
-        console.log(path)
-
+        console.log(`Importing component ${path} site ${site}`)
         const Component = React.lazy(() => import(path));
-
         return (
             <Suspense fallback={<div></div>}>
-                <Component />
+                <DtacqContext.Provider value={{ state, setState }}>
+                    <Component site={1}/>
+                </DtacqContext.Provider>
             </Suspense>
         );
     }
 
-
     function changeHandler(model, action){
         const type = action.type
-        const significant_actions = ["FlexLayout_MoveNode", "FlexLayout_AddNode", "FlexLayout_DeleteTab"]
+        const significant_actions = [
+            "FlexLayout_MoveNode",
+            "FlexLayout_AddNode",
+            "FlexLayout_DeleteTab"
+        ]
         if (significant_actions.includes(type)){
-            console.log(`Action of type ${type}`)
-            updateLayout()
+            saveLayout()
         }
     }
 
@@ -198,9 +234,16 @@ function Test1(props){
         let id = model.getFirstTabSet().getId()
         layoutRef.current.addTabToTabSet(id, {
             component: props.args.path,
-            name: props.label
+            name: props.label,
+            args: props.args
         })
     }
+
+    function testButton1(){
+
+    }
+
+
 
     
 
@@ -211,14 +254,14 @@ function Test1(props){
         <React.Fragment>
             <CssBaseline />
             <div 
-                class="sidebar"
+                className="sidebar"
                 style={{
                     display: open ? '': 'none',
                 }}
             
             >
             <Toolbar>
-                <SiteRotor min={1} max={6}></SiteRotor>
+                <SiteRotor min={1} max={6} target={setSite}></SiteRotor>
             </Toolbar>
             <div className='ExpandScroll'>
                 <NestedList 
@@ -230,6 +273,7 @@ function Test1(props){
             </div>
             <div className="content">
                 <div className="header">
+                    <button onClick={testButton1}>testButton1</button>
                     <AppBar position="static">
                         <Toolbar>
                         <IconButton
@@ -246,17 +290,16 @@ function Test1(props){
                             acq400_ras
                         </Typography>
                         <Typography variant="h6" component="div">
-                            acq2106_130
+                            {state.uut}
                         </Typography>
                         </Toolbar>
                     </AppBar>
                 </div>
                 <div className="main">
-                    <span>main</span>
                     <Layout
                         ref={layoutRef}
                         model={model}
-                        factory={factory2}
+                        factory={factory}
                         onModelChange={changeHandler}
                         className="test999"
                     />
@@ -266,4 +309,4 @@ function Test1(props){
     );
 };
 
-export default Test1;
+export default Launcher;

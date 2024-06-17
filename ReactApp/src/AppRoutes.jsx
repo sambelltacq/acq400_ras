@@ -48,14 +48,14 @@ import ImportTest from "@dtacq/ImportTest"
 import { ContextTest } from '@dtacq/ContextTest.jsx';
 
 
-import DtacqContext from '@dtacq/DtacqContext'
 
-
-
-
+import { TestContext } from "@dtacq/TestContext";
 
 
 const AppRoutes = (props) => {
+
+  const value = 'My Context Value';
+
   return (
     <BrowserRouter>
       <Routes>
@@ -244,16 +244,20 @@ const AppRoutes = (props) => {
             </ProtectedRoute>
           }
         />
+
+
         <Route
-          path="/launcher"
+          path="/launcher/:uut"
           element={
             <ProtectedRoute>
-              <Launcher 
-                uut="acq2106_130"
-              />
+              <TestContext.Provider value={value}>
+                <Launcher />
+              </TestContext.Provider>
             </ProtectedRoute>
           }
         />
+
+
         <Route
           path="/import"
           element={

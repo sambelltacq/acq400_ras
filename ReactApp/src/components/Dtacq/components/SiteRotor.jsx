@@ -5,6 +5,9 @@ import { unstable_useForkRef as useForkRef } from '@mui/utils';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 
+import DtacqContext from "@dtacq/DtacqContext";
+
+
 const CompactNumberInput = React.forwardRef(function CompactNumberInput(props, ref) {
   const {
     getRootProps,
@@ -16,6 +19,7 @@ const CompactNumberInput = React.forwardRef(function CompactNumberInput(props, r
   const inputProps = getInputProps();
 
   inputProps.ref = useForkRef(inputProps.ref, ref);
+
 
   return (
     <StyledInputRoot {...getRootProps()}>
@@ -30,12 +34,15 @@ const CompactNumberInput = React.forwardRef(function CompactNumberInput(props, r
   );
 });
 
-function SiteRotor({max, min}){
+function SiteRotor({max, min, target}){
   const [site, setSite] = React.useState(1);
 
   function handleChange(value){
     if(value >= min && value <= max){
         setSite(value)
+        if(target){
+          target(value)
+        }
     }
   }
 

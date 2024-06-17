@@ -1,0 +1,138 @@
+Format
+    index
+        can add or remove uuts from system
+        can scan via casw
+        list avalible launchers
+
+    launcher
+        side bar of avalible opis 
+        inited with uut object 
+        if no uut object modal asking for uut data that will add to db
+        on opi selection dynamically get opi
+        save layout json to url in base64 config
+        provide base64 string layout input
+        prevent duplicate opi? alert already exists or make active
+
+    opis
+        replicate cs studio opis but seperate 
+        button that sets values
+        can get pv value once
+
+
+
+TODO - Monday = DONE
+    make transient test opi
+        get pv value test
+        normal button that sets pv values
+
+TODO - TUESDAY
+    new tab button DONE
+    load dynamic compoenent CURRENT DONE
+    layout DONE
+TODO - THURSDAY
+    make good style DONE
+    depress button use toggle switch DONE
+    mongodb uut store
+    learn context
+    json launcher opi list
+
+
+    learn context
+    action button
+    uut selector
+    copy opis
+    
+
+    
+
+
+FACTORY ATEMPT TO IMPORT NAME from @dtacq/opi/NAME
+    console.log error + error modal
+
+LAUNCHER
+    add opis at side from named array
+
+
+
+
+
+
+DEAFULT POST
+    ACTION WRITE PV
+    loc://set_mode_pressed(0)
+        write 0
+    ${UUT}:MODE:TRANSIENT:PRE
+        write 0
+    ${UUT}:MODE:TRANSIENT:POST
+        write 0
+    ${UUT}:MODE:TRANSIENT:OSAM
+        write 1
+    ${UUT}:MODE:TRANSIENT:SOFT_TRIGGER
+        ${DEFAULT_SOFT_TRIGGER}
+    <text>Default POST</text>
+
+STOP
+
+
+MultiActionButton
+
+
+how does pb  input work
+
+text_input
+    imports widget
+        widget gets passed TextInputComponent
+        widget wraps TextInputComponent
+        
+
+    textInputComponent
+        is a TextField
+        has event functions 
+            onKeyDown -> handleCatchReturn
+            onChange -> handleChange
+
+        handleCatchReturn
+            if enter
+            handleCommitChange
+                sets commit change to true
+            useEffect on commit change change
+                sets out put value
+                updates new value trigger
+        
+    uses effect socket
+
+
+
+
+
+LOGIN
+components/Administrator/AddUsers.jsx
+    components/Administrator/adminDbHooks/useAddUser.jsx
+        SystemComponents/AutomationStudioContext
+        socketRef.current.emit('adminAddUser', { user:props.user, 'clientAuthorisation': jwtRef.current }
+
+            goes to pv server?
+            goes here
+                @socketio.on("adminAddUser", namespace="/pvServer")
+                    def admin_add_user(message):
+                        pyMongoUtils 
+
+emit get uuts
+emit set uuts
+
+
+TODO
+    enable mongo db
+    make sure it works with only 1 
+    create another table uuts
+    check can set uuts
+    check can read uuts
+
+
+
+how to store vars
+
+    get context
+        get socket
+            emit store uut to socket
+
